@@ -77,9 +77,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        recoverState()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         super.onStart()
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        recoverState()
+    }
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onPause() {
+        super.onPause()
+        saveState()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStop() {
+        super.onStop()
+        saveState()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveState() {
+        val sharedPref = this.getPreferences(MODE_PRIVATE) ?: return
+        val milliseconds = lastSmokedTime?.atZone(ZoneOffset.UTC)?.toInstant()?.toEpochMilli() ?: 0
+
+        with(sharedPref.edit()) {
+            putString(resources.getString(R.string.last_cigarette), "$milliseconds")
+            commit()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun recoverState() {
+        val sharedPref = this.getPreferences(MODE_PRIVATE) ?: return
 
         val millisecondsInString =
             sharedPref.getString(resources.getString(R.string.last_cigarette), "0")
@@ -94,20 +130,6 @@ class MainActivity : AppCompatActivity() {
             if (LocalDateTime.now().hour - lastSmokedTime!!.hour == 0) {
                 setCantSmokeView()
             } else setCanSmokeView()
-        }
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onStop() {
-        super.onStop()
-
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
-        val milliseconds = lastSmokedTime?.atZone(ZoneOffset.UTC)?.toInstant()?.toEpochMilli() ?: 0
-
-        with(sharedPref.edit()) {
-            putString(resources.getString(R.string.last_cigarette), "$milliseconds")
-            commit()
         }
     }
 }
