@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Houry</string>
+    <string name="inform_deny">Not now.</string>
+    <string name="inform_accept">Go ahead</string>
+    <string name="last_cigarette">1990/0/0</string>
+    <string name="first_message">You never used this app before</string>
+</resources>
