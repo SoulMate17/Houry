@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> {
                     lastSmokedTime = LocalDateTime.now()
-                    setCanSmokeView()
+                    setCantSmokeView()
                 }
             }
         }
