@@ -34,11 +34,7 @@ class MainActivity : AppCompatActivity() {
                     lastSmokedTime = LocalDateTime.now()
                     setCantSmokeView()
                 }
-                LocalDateTime.now().hour - lastSmokedTime!!.hour >= 1 -> {
-                    lastSmokedTime = LocalDateTime.now()
-                    setCanSmokeView()
-                }
-                else -> {
+                LocalDateTime.now().hour - lastSmokedTime!!.hour == 0 -> {
                     lastSmokedTime?.let {
                         val minutesLeft = 60 - LocalDateTime.now().minute
                         val secondsLeft = 60 - LocalDateTime.now().second
@@ -50,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     setCantSmokeView()
+                }
+                else -> {
+                    lastSmokedTime = LocalDateTime.now()
+                    setCanSmokeView()
                 }
             }
         }
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 Instant.ofEpochMilli(milliseconds), ZoneOffset.UTC
             )
 
-            if (LocalDateTime.now().hour - lastSmokedTime!!.hour < 1) {
+            if (LocalDateTime.now().hour - lastSmokedTime!!.hour == 0) {
                 setCantSmokeView()
             } else setCanSmokeView()
         }
